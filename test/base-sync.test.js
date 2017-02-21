@@ -273,3 +273,13 @@ it('receives format errors from connection', function () {
     ])
   })
 })
+
+it('sends debug messages', function () {
+  return createTest().then(function (test) {
+    test.leftSync.sendDebug('debugType', { meta: 'info' })
+    return test.wait()
+  }).then(function (test) {
+    var expected = [['debug', 'debugType', { meta: 'info' }]]
+    expect(test.leftSent).toEqual(expected)
+  })
+})
