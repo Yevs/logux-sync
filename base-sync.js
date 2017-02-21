@@ -7,6 +7,7 @@ var connectMessages = require('./messages/connect')
 var errorMessages = require('./messages/error')
 var pingMessages = require('./messages/ping')
 var syncMessages = require('./messages/sync')
+var debugMessages = require('./messages/debug')
 
 var validate = require('./validate')
 
@@ -519,6 +520,18 @@ BaseSync.prototype = {
     if (DUILIANS[line]) {
       this.send(['duilian', DUILIANS[line]])
     }
+  },
+
+  sendDebug: function sendDebug (type, data) {
+    var message = ['debug', type]
+    if (data) {
+      message.push(data)
+    }
+    this.send(message)
+  },
+
+  onDebug: function (type, data) {
+    console.log('Debug:', type, data)
   }
 
 }
@@ -529,7 +542,7 @@ var DUILIANS = {
 }
 
 BaseSync.prototype = assign(BaseSync.prototype,
-  errorMessages, connectMessages, pingMessages, syncMessages)
+  errorMessages, connectMessages, pingMessages, syncMessages, debugMessages)
 
 module.exports = BaseSync
 
